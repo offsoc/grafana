@@ -110,7 +110,7 @@
     "slate-react": "0.22.10",
     "tinycolor2": "1.6.0",
     "tslib": "2.7.0",
-    "uplot": "1.6.30",
+    "uplot": "1.6.31",
     "uuid": "9.0.1"
   },
   "devDependencies": {
@@ -174,7 +174,7 @@
     "react-select-event": "^5.1.0",
     "react-test-renderer": "18.2.0",
     "rimraf": "6.0.1",
-    "rollup": "2.79.1",
+    "rollup": "2.79.2",
     "rollup-plugin-copy": "3.5.0",
     "rollup-plugin-dts": "^5.0.0",
     "rollup-plugin-esbuild": "5.0.0",
@@ -185,7 +185,7 @@
     "storybook-dark-mode": "^4.0.1",
     "style-loader": "4.0.0",
     "typescript": "5.5.4",
-    "webpack": "5.94.0"
+    "webpack": "5.95.0"
   },
   "peerDependencies": {
     "react": "^18.0.0",
