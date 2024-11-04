@@ -62,7 +62,7 @@ require (
 	github.com/go-stack/stack v1.8.1 // @grafana/grafana-backend-group
 	github.com/gobwas/glob v0.2.3 // @grafana/grafana-backend-group
 	github.com/gogo/protobuf v1.3.2 // @grafana/alerting-backend
-	github.com/golang-jwt/jwt/v4 v4.5.0 // @grafana/grafana-backend-group
+	github.com/golang-jwt/jwt/v4 v4.5.1 // @grafana/grafana-backend-group
 	github.com/golang-migrate/migrate/v4 v4.7.0 // @grafana/grafana-backend-group
 	github.com/golang/mock v1.6.0 // @grafana/alerting-backend
 	github.com/golang/protobuf v1.5.4 // @grafana/grafana-backend-group
@@ -88,7 +88,7 @@ require (
 	github.com/grafana/grafana-cloud-migration-snapshot v1.3.0 // @grafana/grafana-operator-experience-squad
 	github.com/grafana/grafana-google-sdk-go v0.1.0 // @grafana/partner-datasources
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20231213163343-bd475d63fb79 // @grafana/grafana-backend-group
-	github.com/grafana/grafana-plugin-sdk-go v0.248.0 // @grafana/plugins-platform-backend
+	github.com/grafana/grafana-plugin-sdk-go v0.250.0 // @grafana/plugins-platform-backend
 	github.com/grafana/grafana/pkg/aggregator v0.0.0-20240813192817-1b0e6b5c09b2 // @grafana/grafana-app-platform-squad
 	github.com/grafana/grafana/pkg/apimachinery v0.0.0-20240821155123-6891eb1d35da // @grafana/grafana-app-platform-squad
 	github.com/grafana/grafana/pkg/apiserver v0.0.0-20240821155123-6891eb1d35da // @grafana/grafana-app-platform-squad
@@ -175,7 +175,7 @@ require (
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // @grafana/alerting-backend
 	golang.org/x/mod v0.20.0 // indirect; @grafana/grafana-backend-group
 	golang.org/x/net v0.29.0 // @grafana/oss-big-tent @grafana/partner-datasources
-	golang.org/x/oauth2 v0.22.0 // @grafana/identity-access-team
+	golang.org/x/oauth2 v0.23.0 // @grafana/identity-access-team
 	golang.org/x/sync v0.8.0 // @grafana/alerting-backend
 	golang.org/x/text v0.18.0 // @grafana/grafana-backend-group
 	golang.org/x/time v0.6.0 // @grafana/grafana-backend-group
@@ -310,7 +310,7 @@ require (
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/go-msgpack v0.5.5 // indirect
-	github.com/hashicorp/go-retryablehttp v0.7.5 // indirect
+	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
 	github.com/hashicorp/go-sockaddr v1.0.6 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/hashicorp/golang-lru v1.0.2 // indirect
@@ -394,7 +394,7 @@ require (
 	github.com/redis/rueidis v1.0.45 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
-	github.com/rs/cors v1.10.1 // @grafana/identity-access-team
+	github.com/rs/cors v1.11.0 // @grafana/identity-access-team
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
