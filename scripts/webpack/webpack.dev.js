@@ -55,7 +55,9 @@ module.exports = (env = {}) => {
         // Also Grafana packages need to be resolved from the same location so they share
         // the same singletons
         '@grafana/runtime': path.resolve(__dirname, '../../packages/grafana-runtime'),
-        '@grafana/data': path.resolve(__dirname, '../../packages/grafana-data'),
+        '@grafana/data$': path.resolve(__dirname, '../../packages/grafana-data/src/index.ts'),
+        '@grafana/data/internal$': path.resolve(__dirname, '../../packages/grafana-data/src/internal/index.ts'),
+        '@grafana/data/unstable$': path.resolve(__dirname, '../../packages/grafana-data/src/unstable.ts'),
 
         // This is required to correctly resolve react-router-dom when linking with
         //  local version of @grafana/scenes
