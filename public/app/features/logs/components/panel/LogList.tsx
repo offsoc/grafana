@@ -60,7 +60,7 @@ interface Props {
   storageKey?: string;
   timeRange: TimeRange;
   timeZone: string;
-  syntaxHighlighting: boolean;
+  syntaxHighlighting?: boolean;
   wrapLogMessage: boolean;
 }
 
