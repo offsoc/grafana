@@ -44,6 +44,7 @@ interface Props {
   getRowContextQuery?: GetRowContextQueryFn;
   initialScrollPosition?: 'top' | 'bottom';
   loadMore?: (range: AbsoluteTimeRange) => void;
+  logOptionsStorageKey?: string;
   logs: LogRowModel[];
   logSupportsContext?: (row: LogRowModel) => boolean;
   onLogOptionsChange?: (option: keyof LogListControlOptions, value: string | boolean | string[]) => void;
@@ -81,6 +82,7 @@ export const LogList = ({
   getRowContextQuery,
   initialScrollPosition = 'top',
   loadMore,
+  logOptionsStorageKey,
   logs,
   logSupportsContext,
   onLogOptionsChange,
@@ -104,6 +106,7 @@ export const LogList = ({
       dedupStrategy={dedupStrategy}
       displayedFields={displayedFields}
       getRowContextQuery={getRowContextQuery}
+      logOptionsStorageKey={logOptionsStorageKey}
       logSupportsContext={logSupportsContext}
       onLogOptionsChange={onLogOptionsChange}
       onPermalinkClick={onPermalinkClick}
