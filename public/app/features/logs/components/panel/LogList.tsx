@@ -8,6 +8,7 @@ import {
   CoreApp,
   DataFrame,
   EventBus,
+  EventBusSrv,
   Field,
   LinkModel,
   LogRowModel,
@@ -38,7 +39,7 @@ interface Props {
   containerElement: HTMLDivElement;
   dedupStrategy: LogsDedupStrategy;
   displayedFields: string[];
-  eventBus: EventBus;
+  eventBus?: EventBus;
   forceEscape?: boolean;
   getFieldLinks?: GetFieldLinksFn;
   getRowContextQuery?: GetRowContextQueryFn;
@@ -139,7 +140,7 @@ export const LogList = ({
 
 const LogListComponent = ({
   containerElement,
-  eventBus,
+  eventBus = new EventBusSrv(),
   forceEscape = false,
   getFieldLinks,
   initialScrollPosition = 'top',
