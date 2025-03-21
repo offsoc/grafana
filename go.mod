@@ -559,8 +559,8 @@ require (
 )
 
 require (
-	github.com/1NCE-GmbH/grpc-go-pool v0.0.0-20231117122434-2a5bb974daa2
-	github.com/grafana/grafana/pkg/build v0.0.0-20250321143249-77c5e0eeb246
+	github.com/1NCE-GmbH/grpc-go-pool v0.0.0-20231117122434-2a5bb974daa2 // @grafana/grafana-backend-group
+	github.com/grafana/grafana/pkg/build v0.0.0-20250321143249-77c5e0eeb246 // @grafana/grafana-backend-group
 )
 
 require (
