@@ -12,6 +12,9 @@ import (
 	"sort"
 	"time"
 
+	"go.opentelemetry.io/otel/codes"
+	"golang.org/x/crypto/nacl/box"
+
 	snapshot "github.com/grafana/grafana-cloud-migration-snapshot/src"
 	"github.com/grafana/grafana-cloud-migration-snapshot/src/contracts"
 	"github.com/grafana/grafana-cloud-migration-snapshot/src/infra/crypto"
@@ -29,9 +32,6 @@ import (
 	"github.com/grafana/grafana/pkg/services/pluginsintegration/pluginsettings"
 	"github.com/grafana/grafana/pkg/services/user"
 	"github.com/grafana/grafana/pkg/util/retryer"
-	"golang.org/x/crypto/nacl/box"
-
-	"go.opentelemetry.io/otel/codes"
 )
 
 var currentMigrationTypes = []cloudmigration.MigrateDataType{
@@ -48,7 +48,7 @@ var currentMigrationTypes = []cloudmigration.MigrateDataType{
 	cloudmigration.PluginDataType,
 }
 
-func (s *Service) getMigrationDataJSON(ctx context.Context, signedInUser *user.SignedInUser) (*cloudmigration.MigrateDataRequest, error) {
+func (s *Service) getMigrationDataJSON(ctx context.Context, signedInUser *user.SignedInUser, resources cloudmigration.ParsedResourceTypes) (*cloudmigration.MigrateDataRequest, error) {
 	ctx, span := s.tracer.Start(ctx, "CloudMigrationService.getMigrationDataJSON")
 	defer span.End()
 
@@ -66,6 +66,32 @@ func (s *Service) getMigrationDataJSON(ctx context.Context, signedInUser *user.S
 		return nil, err
 	}
 
+	// REDO THIS, migrate all plugins always because it is not a big deal and there is some inconsistency with how the plugins are named vs the datasources.
+	// Only migrate plugins used by data sources.
+	if resources.Scope(cloudmigration.PluginDataType) == cloudmigration.ResourceMigrationScopeUsed {
+		// Figure out which data sources are using which plugins.
+		neededPlugins := make(map[string]struct{})
+		for _, dataSource := range dataSources {
+			neededPlugins[dataSource.Type] = struct{}{}
+		}
+
+		fmt.Printf("\nDATA SOURCES: %v\n", dataSources)
+		fmt.Printf("\nORIGINAL PLUGINS: %v\n", plugins)
+
+		// Overwrite the plugins to only include the ones that are being used by data sources.
+		filteredPlugins := make([]PluginCmd, 0)
+		for _, plugin := range plugins {
+			if _, ok := neededPlugins[plugin.ID]; ok {
+				filteredPlugins = append(filteredPlugins, plugin)
+			}
+		}
+
+		plugins = filteredPlugins
+
+		fmt.Printf("\nNEEDED PLUGINS: %v\n", neededPlugins)
+		fmt.Printf("\nFILTERED PLUGINS: %v\n", filteredPlugins)
+	}
+
 	// Dashboards and folders are linked via the schema, so we need to get both
 	dashs, folders, err := s.getDashboardAndFolderCommands(ctx, signedInUser)
 	if err != nil {
@@ -78,6 +104,16 @@ func (s *Service) getMigrationDataJSON(ctx context.Context, signedInUser *user.S
 		s.log.Error("Failed to get library elements", "err", err)
 		return nil, err
 	}
+
+	// First figure out which folders are being used by library elements.
+	libraryElementsFolders := make(map[string]struct{})
+	for _, libraryElement := range libraryElements {
+		if libraryElement.FolderUID != nil {
+			libraryElementsFolders[*libraryElement.FolderUID] = struct{}{}
+		}
+	}
+
+	// Now, we filter the folders to only include the ones that are being used by library elements.
 
 	// Alerts: Mute Timings
 	muteTimings, err := s.getAlertMuteTimings(ctx, signedInUser)
@@ -486,6 +522,8 @@ func (s *Service) getPlugins(ctx context.Context, signedInUser *user.SignedInUse
 			pluginSettingCmd.SecureJsonData = decryptedData
 		}
 
+		fmt.Printf("\nPlugin Dependencies for (id=%v) %v: %+v (has_parent=%v)\n", plugin.ID, plugin.Name, plugin.Dependencies, plugin.Parent != nil)
+
 		results = append(results, PluginCmd{
 			ID:         plugin.ID,
 			Name:       plugin.Name,
@@ -497,7 +535,7 @@ func (s *Service) getPlugins(ctx context.Context, signedInUser *user.SignedInUse
 }
 
 // asynchronous process for writing the snapshot to the filesystem and updating the snapshot status
-func (s *Service) buildSnapshot(ctx context.Context, signedInUser *user.SignedInUser, maxItemsPerPartition uint32, metadata []byte, snapshotMeta cloudmigration.CloudMigrationSnapshot) error {
+func (s *Service) buildSnapshot(ctx context.Context, signedInUser *user.SignedInUser, maxItemsPerPartition uint32, metadata []byte, snapshotMeta cloudmigration.CloudMigrationSnapshot, resourceTypes cloudmigration.ParsedResourceTypes) error {
 	ctx, span := s.tracer.Start(ctx, "CloudMigrationService.buildSnapshot")
 	defer span.End()
 
@@ -531,7 +569,7 @@ func (s *Service) buildSnapshot(ctx context.Context, signedInUser *user.SignedIn
 
 	s.log.Debug(fmt.Sprintf("buildSnapshot: created snapshot writing in %d ms", time.Since(start).Milliseconds()))
 
-	migrationData, err := s.getMigrationDataJSON(ctx, signedInUser)
+	migrationData, err := s.getMigrationDataJSON(ctx, signedInUser, resourceTypes)
 	if err != nil {
 		return fmt.Errorf("fetching migration data: %w", err)
 	}

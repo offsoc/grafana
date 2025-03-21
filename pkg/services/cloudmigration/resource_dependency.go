@@ -30,24 +30,14 @@ var ResourceDependency = DependencyMap{
 }
 
 // Parse a raw slice of resource types and returns a set of them if it has all correct dependencies.
-func (depMap DependencyMap) Parse(rawInput []MigrateDataType) (ResourceTypes, error) {
-	// Clean up any possible duplicates.
-	input := make(ResourceTypes, len(rawInput))
-	for _, resourceType := range rawInput {
-		if _, exists := input[resourceType]; exists {
-			return nil, ErrDuplicateResourceType.Errorf("duplicate resource type found: %v", resourceType)
-		}
-		input[resourceType] = struct{}{}
-	}
-
-	// Validate that all dependencies are present.
+func (depMap DependencyMap) Parse(input ResourceTypes) (ParsedResourceTypes, error) {
 	for resourceType := range input {
 		if err := depMap.validateDependencies(resourceType, input); err != nil {
 			return nil, err
 		}
 	}
 
-	return input, nil
+	return ParsedResourceTypes(input), nil
 }
 
 // validateDependencies recursively checks if all dependencies for a resource type are present in the input set.
