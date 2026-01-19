@@ -1831,6 +1831,12 @@
     "interval": {
      "$ref": "#/definitions/Duration"
     },
+    "labels": {
+     "additionalProperties": {
+      "type": "string"
+     },
+     "type": "object"
+    },
     "limit": {
      "format": "int64",
      "type": "integer"
@@ -1840,6 +1846,12 @@
     },
     "query_offset": {
      "type": "string"
+    },
+    "remote_write": {
+     "items": {
+      "$ref": "#/definitions/RemoteWriteConfig"
+     },
+     "type": "array"
     },
     "rules": {
      "items": {
@@ -3170,6 +3182,12 @@
     "interval": {
      "$ref": "#/definitions/Duration"
     },
+    "labels": {
+     "additionalProperties": {
+      "type": "string"
+     },
+     "type": "object"
+    },
     "limit": {
      "format": "int64",
      "type": "integer"
@@ -3179,6 +3197,12 @@
     },
     "query_offset": {
      "type": "string"
+    },
+    "remote_write": {
+     "items": {
+      "$ref": "#/definitions/RemoteWriteConfig"
+     },
+     "type": "array"
     },
     "rules": {
      "items": {
@@ -3845,6 +3869,14 @@
    },
    "type": "object"
   },
+  "RemoteWriteConfig": {
+   "properties": {
+    "url": {
+     "type": "string"
+    }
+   },
+   "type": "object"
+  },
   "ResponseDetails": {
    "properties": {
     "msg": {
@@ -4121,6 +4153,12 @@
     "interval": {
      "$ref": "#/definitions/Duration"
     },
+    "labels": {
+     "additionalProperties": {
+      "type": "string"
+     },
+     "type": "object"
+    },
     "limit": {
      "format": "int64",
      "type": "integer"
@@ -4130,6 +4168,12 @@
     },
     "query_offset": {
      "type": "string"
+    },
+    "remote_write": {
+     "items": {
+      "$ref": "#/definitions/RemoteWriteConfig"
+     },
+     "type": "array"
     },
     "rules": {
      "items": {
